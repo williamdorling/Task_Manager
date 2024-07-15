@@ -3,17 +3,13 @@
 from datetime import date
 
 #====Login Section====
-'''Here you will write code that will allow a user to login.
-    - Your code must read usernames and password from the user.txt file
-    - You can use a list or dictionary to store a list of usernames and passwords from the file
-    - Use a while loop to validate your user name and password
-'''
+
 # read user.txt
 # create dictionary with keys as usernames, and values as passwords
 # Prompt user to enter username
 # validate if username exists
 # prompt user to enter password
-# checks if password matches with the username
+# check if password matches with the username
 
 username_dictionary = {}
 with open('user.txt','r+') as usernames:
@@ -31,74 +27,62 @@ while username not in username_dictionary:
 password = input("Thank you, please enter your password: ")
 while username_dictionary[username] != password:
     password = input("Incorrect password, please enter your correct password: ")
-print(f"Thank you, {username}, you are successfully logged in")
+print(f"Thank you, {username}, you are successfully logged in\n")
 
 
 
 while True:
     # Present the menu to the user and 
     # make sure that the user input is converted to lower case.
-    menu = input('''Select one of the following options:
-r - register a user
-a - add task
-va - view all tasks
-vm - view my tasks
-e - exit
-: ''').lower()
+    if username == "admin":
+        menu = input('''Select one of the following options:
+    r - register a user
+    a - add task
+    va - view all tasks
+    vm - view my tasks
+    vs - view statistics
+    e - exit
+    : ''').lower()
+    else:
+        menu = input('''Select one of the following options:
+    r - register a user
+    a - add task
+    va - view all tasks
+    vm - view my tasks
+    e - exit
+    : ''').lower()
 
     if menu == 'r':
-        '''This code block will add a new user to the user.txt file
-        - You can use the following steps:
-            - Request input of a new username
-            - Request input of a new password
-            - Request input of password confirmation.
-            - Check if the new password and confirmed password are the same
-            - If they are the same, add them to the user.txt file,
-              otherwise present a relevant message'''
-        new_username = input("Please choose a username: ")
-        while new_username in username_dictionary:
-            new_username = input("This username is taken, please choose another username: ")
-        new_password = input("Please enter a password: ")
-        confirm_password = input("Please confirm your password: ")
-        while new_password != confirm_password:
-            new_password = input("Passwords do not match, please enter a password: ")
+        if username != "admin":
+            print("Only the admin may register a new user\n")
+        else:
+            new_username = input("Please choose a username: ")
+            while new_username in username_dictionary:
+                new_username = input("This username is taken, please choose another username: ")
+            new_password = input("Please enter a password: ")
             confirm_password = input("Please confirm your password: ")
-        with open('user.txt','a') as usernames:
-            usernames.write(f"{new_username}, {new_password}\n")
-            username_dictionary[new_username] = new_password
-        print(f"\nThank you, user {new_username} created.\n")
+            while new_password != confirm_password:
+                new_password = input("Passwords do not match, please enter a password: ")
+                confirm_password = input("Please confirm your password: ")
+            with open('user.txt','a') as usernames:
+                usernames.write(f"{new_username}, {new_password}\n")
+                username_dictionary[new_username] = new_password
+            print(f"\nThank you, user {new_username} created.\n")
 
     elif menu == 'a':
-        '''This code block will allow a user to add a new task to task.txt file
-        - You can use these steps:
-            - Prompt a user for the following: 
-                - the username of the person whom the task is assigned to,
-                - the title of the task,
-                - the description of the task, and 
-                - the due date of the task.
-            - Then, get the current date.
-            - Add the data to the file task.txt
-            - Remember to include 'No' to indicate that the task is not complete.'''
-        username = input("Please enter the user whom this task will be assigned to: ")
-        while username not in username_dictionary:
-            username = input(f"User {username} not found, please enter a valid username: ")
+        task_username = input("Please enter the user whom this task will be assigned to: ")
+        while task_username not in username_dictionary:
+            task_username = input(f"User {task_username} not found, please enter a valid username: ")
         title = input("Please enter a title of this task: ")
         description = input("Please enter a description for this task: ")
         due_date = input("Please enter the due date for this task: ")
         current_date = date.today()
         with open('tasks.txt','a') as tasks:
-            tasks.write(f"{username}, {title}, {description}, {current_date}, {due_date}, No\n")
-        print(f"\nThank you, task {title} added for {username}.\n")
+            tasks.write(f"{task_username}, {title}, {description}, {current_date}, {due_date}, No\n")
+        print(f"\nThank you, task {title} added for {task_username}.\n")
 
     elif menu == 'va':
-        '''This code block will read the task from task.txt file and
-         print to the console in the format of Output 2 presented in the PDF
-         You can do it in this way:
-            - Read a line from the file.
-            - Split that line where there is comma and space.
-            - Then print the results in the format shown in the Output 2 in the PDF
-            - It is much easier to read a file using a for loop.'''
-        print("\nTasks:")
+        print("\nAll Tasks:")
         print("------------------")
         with open('tasks.txt', 'r+') as tasks:
             for line in tasks:
@@ -111,22 +95,37 @@ e - exit
                 print(f"Task complete? \t {complete}")
                 print(f"Task description: \n {description}")
                 print("------------------")
+        print("\n")
 
     elif menu == 'vm':
-        pass
-        '''This code block will read the task from task.txt file and
-         print to the console in the format of Output 2 presented in the PDF
-         You can do it in this way:
-            - Read a line from the file
-            - Split the line where there is comma and space.
-            - Check if the username of the person logged in is the same as the 
-              username you have read from the file.
-            - If they are the same you print the task in the format of Output 2
-              shown in the PDF '''
+        print("\nMy Tasks:")
+        print("------------------")
+        with open('tasks.txt', 'r+') as tasks:
+            for task in tasks:
+                [user, title, description, start_date, due_date, complete] = task.strip('\n').split(', ')
+                if user == username:
+                    print(f"Task: \t\t {title}")
+                    print(f"Assigned to: \t {user}")
+                    print(f"Date assigned: \t {start_date}")
+                    print(f"Due date: \t {due_date}")
+                    print(f"Task complete? \t {complete}")
+                    print(f"Task description: \n {description}")
+                    print("------------------")
+        print("\n")
+
+    elif menu == 'vs' and username == 'admin':
+        with open('tasks.txt', 'r+') as tasks:
+            number_of_tasks = sum(1 for task in tasks)
+        with open('user.txt', 'r+') as users:
+            number_of_users = sum(1 for user in users)
+        print("------------------")
+        print(f"Number of users: {number_of_users}")
+        print(f"Number of tasks: {number_of_tasks}")
+        print("------------------")
 
     elif menu == 'e':
         print('Goodbye!!!')
         exit()
 
     else:
-        print("You have entered an invalid input. Please try again")
+        print("You have entered an invalid input. Please try again\n")

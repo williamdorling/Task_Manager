@@ -18,10 +18,21 @@ username_dictionary = {}
 with open('user.txt','r+') as usernames:
     for line in usernames:
         username_password = line.strip('\n').split(', ')
-        #returns list in form ['username', 'password']
+        # returns list in form ['username', 'password']
         username_dictionary[username_password[0]] = username_password[1]
-    print(username_dictionary)
-    
+        # adds username/password combination to dictionary
+
+
+username = input("Welcome: Please enter your username: ")
+while username not in username_dictionary:
+    username = input("No user with this name, please enter a valid username: ")
+
+password = input("Thank you, please enter your password: ")
+while username_dictionary[username] != password:
+    password = input("Incorrect password, please enter your correct password: ")
+print(f"Thank you, {username}, you are now logged in")
+
+
 
 # while True:
 #     # Present the menu to the user and 

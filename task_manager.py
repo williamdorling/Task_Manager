@@ -83,7 +83,7 @@ e - exit
         while username not in username_dictionary:
             username = input(f"User {username} not found, please enter a valid username: ")
         title = input("Please enter a title of this task: ")
-        description = input("Please enter a description for this task:")
+        description = input("Please enter a description for this task: ")
         due_date = input("Please enter the due date for this task: ")
         current_date = date.today()
         with open('tasks.txt','a') as tasks:
@@ -91,7 +91,6 @@ e - exit
         print(f"\nThank you, task {title} added for {username}.\n")
 
     elif menu == 'va':
-        pass
         '''This code block will read the task from task.txt file and
          print to the console in the format of Output 2 presented in the PDF
          You can do it in this way:
@@ -99,6 +98,19 @@ e - exit
             - Split that line where there is comma and space.
             - Then print the results in the format shown in the Output 2 in the PDF
             - It is much easier to read a file using a for loop.'''
+        print("\nTasks:")
+        print("------------------")
+        with open('tasks.txt', 'r+') as tasks:
+            for line in tasks:
+                [user, title, description, start_date, due_date, complete] = line.strip('\n').split(', ')
+                # print(task_list)
+                print(f"Task: \t\t {title}")
+                print(f"Assigned to: \t {user}")
+                print(f"Date assigned: \t {start_date}")
+                print(f"Due date: \t {due_date}")
+                print(f"Task complete? \t {complete}")
+                print(f"Task description: \n {description}")
+                print("------------------")
 
     elif menu == 'vm':
         pass

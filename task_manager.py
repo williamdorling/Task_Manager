@@ -1,5 +1,6 @@
 #=====importing libraries===========
 '''This is the section where you will import libraries'''
+from datetime import date
 
 #====Login Section====
 '''Here you will write code that will allow a user to login.
@@ -68,7 +69,6 @@ e - exit
         print(f"\nThank you, user {new_username} created.\n")
 
     elif menu == 'a':
-        pass
         '''This code block will allow a user to add a new task to task.txt file
         - You can use these steps:
             - Prompt a user for the following: 
@@ -79,6 +79,16 @@ e - exit
             - Then, get the current date.
             - Add the data to the file task.txt
             - Remember to include 'No' to indicate that the task is not complete.'''
+        username = input("Please enter the user whom this task will be assigned to: ")
+        while username not in username_dictionary:
+            username = input(f"User {username} not found, please enter a valid username: ")
+        title = input("Please enter a title of this task: ")
+        description = input("Please enter a description for this task:")
+        due_date = input("Please enter the due date for this task: ")
+        current_date = date.today()
+        with open('tasks.txt','a') as tasks:
+            tasks.write(f"{username}, {title}, {description}, {current_date}, {due_date}, No\n")
+        print(f"\nThank you, task {title} added for {username}.\n")
 
     elif menu == 'va':
         pass

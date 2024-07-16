@@ -1,9 +1,10 @@
 #=====importing libraries===========
-'''This is the section where you will import libraries'''
+
 from datetime import date
 
 #====Login Section====
 
+# Pseudocode
 # read user.txt
 # create dictionary with keys as usernames, and values as passwords
 # Prompt user to enter username
@@ -19,16 +20,14 @@ with open('user.txt','r+') as usernames:
         username_dictionary[username_password[0]] = username_password[1]
         # adds username/password combination to dictionary
 
-
 username = input("Welcome! Please enter your username: ")
-while username not in username_dictionary:
+while username not in username_dictionary: # checks username is valid
     username = input("No user with this name, please enter a valid username: ")
 
 password = input("Thank you, please enter your password: ")
-while username_dictionary[username] != password:
+while username_dictionary[username] != password: # checks password is correct
     password = input("Incorrect password, please enter your correct password: ")
-print(f"Thank you, {username}, you are successfully logged in\n")
-
+print(f"\nThank you, {username}, you are successfully logged in\n")
 
 
 while True:
@@ -57,37 +56,36 @@ while True:
             print("Only the admin may register a new user\n")
         else:
             new_username = input("Please choose a username: ")
-            while new_username in username_dictionary:
+            while new_username in username_dictionary:  #check username is not already taken
                 new_username = input("This username is taken, please choose another username: ")
             new_password = input("Please enter a password: ")
             confirm_password = input("Please confirm your password: ")
-            while new_password != confirm_password:
+            while new_password != confirm_password:  # check password matches confirmation
                 new_password = input("Passwords do not match, please enter a password: ")
                 confirm_password = input("Please confirm your password: ")
-            with open('user.txt','a') as usernames:
+            with open('user.txt','a') as usernames:  # open user.txt to append new username password combination
                 usernames.write(f"{new_username}, {new_password}\n")
                 username_dictionary[new_username] = new_password
             print(f"\nThank you, user {new_username} created.\n")
 
     elif menu == 'a':
         task_username = input("Please enter the user whom this task will be assigned to: ")
-        while task_username not in username_dictionary:
+        while task_username not in username_dictionary:  # check that chosen user exists 
             task_username = input(f"User {task_username} not found, please enter a valid username: ")
         title = input("Please enter a title of this task: ")
         description = input("Please enter a description for this task: ")
         due_date = input("Please enter the due date for this task: ")
         current_date = date.today()
-        with open('tasks.txt','a') as tasks:
+        with open('tasks.txt','a') as tasks:  # open tasks.txt to append new task
             tasks.write(f"{task_username}, {title}, {description}, {current_date}, {due_date}, No\n")
         print(f"\nThank you, task {title} added for {task_username}.\n")
 
     elif menu == 'va':
         print("\nAll Tasks:")
         print("------------------")
-        with open('tasks.txt', 'r+') as tasks:
+        with open('tasks.txt', 'r+') as tasks:  # open tasks.txt to read tasks
             for line in tasks:
                 [user, title, description, start_date, due_date, complete] = line.strip('\n').split(', ')
-                # print(task_list)
                 print(f"Task: \t\t {title}")
                 print(f"Assigned to: \t {user}")
                 print(f"Date assigned: \t {start_date}")
@@ -103,7 +101,7 @@ while True:
         with open('tasks.txt', 'r+') as tasks:
             for task in tasks:
                 [user, title, description, start_date, due_date, complete] = task.strip('\n').split(', ')
-                if user == username:
+                if user == username:  # select only tasks assigned to the logged-in user
                     print(f"Task: \t\t {title}")
                     print(f"Assigned to: \t {user}")
                     print(f"Date assigned: \t {start_date}")
@@ -113,11 +111,11 @@ while True:
                     print("------------------")
         print("\n")
 
-    elif menu == 'vs' and username == 'admin':
+    elif menu == 'vs' and username == 'admin':  # check user is admin
         with open('tasks.txt', 'r+') as tasks:
-            number_of_tasks = sum(1 for task in tasks)
+            number_of_tasks = sum(1 for task in tasks)  # counts number of tasks by creating list of 1s and summing up
         with open('user.txt', 'r+') as users:
-            number_of_users = sum(1 for user in users)
+            number_of_users = sum(1 for user in users)  # counts number of users as above
         print("------------------")
         print(f"Number of users: {number_of_users}")
         print(f"Number of tasks: {number_of_tasks}")

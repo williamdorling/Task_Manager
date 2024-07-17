@@ -1,9 +1,7 @@
 #=====importing libraries===========
-
 from datetime import date
 
 #====Login Section====
-
 # Pseudocode
 # read user.txt
 # create dictionary with keys as usernames, and values as passwords
@@ -11,25 +9,23 @@ from datetime import date
 # validate if username exists
 # prompt user to enter password
 # check if password matches with the username
-
 username_dictionary = {}
 with open('user.txt','r+') as usernames:
     for line in usernames:
-        username_password = line.strip('\n').split(', ')
-        # returns list in form ['username', 'password']
-        username_dictionary[username_password[0]] = username_password[1]
-        # adds username/password combination to dictionary
-
+        [username, password] = line.strip('\n').split(', ')
+        # add username/password combination to dictionary
+        username_dictionary[username] = password
+print(username_dictionary)
 username = input("Welcome! Please enter your username: ")
-while username not in username_dictionary: # checks username is valid
+while username not in username_dictionary:  # checks username is valid
     username = input("No user with this name, please enter a valid username: ")
 
 password = input("Thank you, please enter your password: ")
-while username_dictionary[username] != password: # checks password is correct
+while username_dictionary[username] != password:  # checks password is correct
     password = input("Incorrect password, please enter your correct password: ")
 print(f"\nThank you, {username}, you are successfully logged in\n")
 
-
+print(username)
 while True:
     # Present the menu to the user and 
     # make sure that the user input is converted to lower case.
@@ -56,7 +52,7 @@ while True:
             print("Only the admin may register a new user\n")
         else:
             new_username = input("Please choose a username: ")
-            while new_username in username_dictionary:  #check username is not already taken
+            while new_username in username_dictionary:  # check username is not already taken
                 new_username = input("This username is taken, please choose another username: ")
             new_password = input("Please enter a password: ")
             confirm_password = input("Please confirm your password: ")
@@ -74,8 +70,8 @@ while True:
             task_username = input(f"User {task_username} not found, please enter a valid username: ")
         title = input("Please enter a title of this task: ")
         description = input("Please enter a description for this task: ")
-        due_date = input("Please enter the due date for this task: ")
-        current_date = date.today()
+        due_date = input("Please enter the due date for this task, in the format DD Mon YYYY, e.g 12 Oct 2024: ")
+        current_date = date.today().strftime("%d %b %Y")
         with open('tasks.txt','a') as tasks:  # open tasks.txt to append new task
             tasks.write(f"{task_username}, {title}, {description}, {current_date}, {due_date}, No\n")
         print(f"\nThank you, task {title} added for {task_username}.\n")
@@ -113,9 +109,9 @@ while True:
 
     elif menu == 'vs' and username == 'admin':  # check user is admin
         with open('tasks.txt', 'r+') as tasks:
-            number_of_tasks = sum(1 for task in tasks)  # counts number of tasks by creating list of 1s and summing up
+            number_of_tasks = sum(1 for task in tasks)  # counts number of tasks
         with open('user.txt', 'r+') as users:
-            number_of_users = sum(1 for user in users)  # counts number of users as above
+            number_of_users = sum(1 for user in users)  # counts number of users
         print("------------------")
         print(f"Number of users: {number_of_users}")
         print(f"Number of tasks: {number_of_tasks}")
